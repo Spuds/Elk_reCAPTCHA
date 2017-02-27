@@ -56,6 +56,9 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 
 		$this->show_captcha = false;
 
+		// Language parameter
+		$lang = !empty($modSettings['recaptcha_language']) ? '&hl=' . $modSettings['recaptcha_language'] : '';
+
 		// On and valid, well non empty keys.
 		if (!empty($modSettings['recaptcha_enable']) && !empty($this->_site_key) && !empty($this->_secret_key))
 		{
@@ -65,11 +68,11 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 			loadTemplate('VerificationControls');
 			addInlineJavascript('
      			var onloadreCaptcha = function() {
-       				grecaptcha.render(\'g-recaptcha\', {
-							\'sitekey\' : \'' . $this->_site_key . '\'
+       				grecaptcha.render("g-recaptcha", {
+							"sitekey" : "' . $this->_site_key . '"
 					});
 				};');
-			loadJavascriptFile('https://www.google.com/recaptcha/api.js?onload=onloadreCaptcha&render=explicit', array('defer' => true, 'async' => 'true'));
+			loadJavascriptFile('https://www.google.com/recaptcha/api.js?onload=onloadreCaptcha&render=explicit' . $lang, array('defer' => true, 'async' => 'true'));
 		}
 
 		return $this->show_captcha;
@@ -143,6 +146,8 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 	 */
 	public function settings()
 	{
+		global $txt;
+
 		// Visual verification.
 		$config_vars = array(
 			array('title', 'recaptcha_verification'),
@@ -150,6 +155,7 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 			array('check', 'recaptcha_enable'),
 			array('text', 'recaptcha_site_key'),
 			array('text', 'recaptcha_secret_key'),
+			array('text', 'recaptcha_language', 6, 'postinput' => $txt['recaptcha_language_desc']),
 		);
 
 		return $config_vars;
