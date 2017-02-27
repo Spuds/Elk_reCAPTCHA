@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.elkarte.net/site/package-info">
+<package-info xmlns="http://www.elkarte.net/site/package-info" xmlns:elk="http://www.elkarte.net/">
+	<name>reCaptcha</name>
+	<id>ant59:recaptcha</id>
+	<type>addon</type>
+	<version>1.0.0</version>
+
+	<install for="1.0 - 1.0.99">
+		<readme type="file" parsebbc="true">readme.txt</readme>
+		<license type="inline">This Elkarte addon is released under a BSD-3-Clause license.</license>
+		<require-file name="reCaptcha.class.php" destination="SUBSDIR" />
+		<require-file name="reCaptcha.english.php" destination="LANGUAGEDIR/english" />
+		<require-file name="reCaptcha.template.php" destination="THEMEDIR" />
+		<require-dir name="ext" destination="SOURCEDIR" />
+		<hook hook="integrate_control_verification" file="SUBSDIR/reCaptcha.class.php" function="icv_recaptcha" />
+	</install>
+
+	<uninstall for="1.0 - 1.0.99">
+		<hook reverse="true" hook="integrate_control_verification" file="SUBSDIR/reCaptcha.class.php" function="icv_recaptcha" />
+		<remove-file name="SUBSDIR/reCaptcha.class.php" />
+		<remove-file name="THEMEDIR/reCaptcha.template.php" />
+		<remove-file name="LANGUAGEDIR/english/reCaptcha.english.php" />
+		<remove-file name="EXTDIR/recaptchalib.php" />
+	</uninstall>
+
+</package-info>
