@@ -6,3 +6,5 @@ It uses advanced risk analysis techniques to tell humans and bots apart. With th
 
 To use reCAPTCHA, you need to sign up for an API key pair for your site [http://www.google.com/recaptcha/admin](http://www.google.com/recaptcha/admin)
 The key pair consists of a site key and secret. The site key is used to display the widget on your site. The secret authorizes communication between your application backend and the reCAPTCHA server to verify the user's response. The secret needs to be kept safe for security purposes.
+
+To enter your API key go to your sites Admin -> Configuration -> Security and Moderation -> Anti-Spam section and find the reCAPTCHA area.
