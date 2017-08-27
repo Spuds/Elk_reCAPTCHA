@@ -4,7 +4,7 @@
 	<name>reCaptcha</name>
 	<id>ant59:recaptcha</id>
 	<type>addon</type>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 
 	<install for="1.0 - 1.0.99">
 		<readme type="file" parsebbc="true">readme.txt</readme>

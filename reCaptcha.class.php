@@ -4,7 +4,8 @@ function icv_recaptcha(&$known_verifications)
 {
 	// Make sure its not already there.
 	$key = array_search('ReCaptcha', $known_verifications);
-	unset($known_verifications[$key]);
+	if ($key !== false)
+		unset($known_verifications[$key]);
 
 	$known_verifications[] = 'ReCaptcha';
 	loadLanguage('reCaptcha');
