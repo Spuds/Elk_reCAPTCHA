@@ -6,7 +6,7 @@
 	<type>addon</type>
 	<version>1.0.1</version>
 
-	<install for="1.0 - 1.0.99">
+	<install for="1.0 - 1.1.99">
 		<readme type="file" parsebbc="true">readme.txt</readme>
 		<license type="inline">This Elkarte addon is released under a BSD-3-Clause license.</license>
 		<require-file name="reCaptcha.class.php" destination="SUBSDIR" />
@@ -17,7 +17,7 @@
 		<redirect url="$scripturl?action=admin;area=securitysettings;sa=spam#recaptcha_verification" timeout="3000" />
 	</install>
 
-	<uninstall for="1.0 - 1.0.99">
+	<uninstall for="1.0 - 1.1.99">
 		<hook reverse="true" hook="integrate_control_verification" file="SUBSDIR/reCaptcha.class.php" function="icv_recaptcha" />
 		<remove-file name="SUBSDIR/reCaptcha.class.php" />
 		<remove-file name="THEMEDIR/reCaptcha.template.php" />
