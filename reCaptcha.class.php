@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * @package reCaptcha
+ *
+ * @author Antony Derham
+ * @copyright 2015-2022
+ * @license BSD 3-clause
+ * @version 1.0.2
+ */
+
 function icv_recaptcha(&$known_verifications)
 {
-	// Make sure its not already there.
+	// Make sure it is not already there.
 	$key = array_search('ReCaptcha', $known_verifications);
 	if ($key !== false)
 		unset($known_verifications[$key]);
@@ -16,11 +25,11 @@ function icv_recaptcha(&$known_verifications)
  */
 class Verification_Controls_ReCaptcha implements Verification_Controls
 {
-	private $_options = null;
-	private $_site_key = null;
-	private $_secret_key = null;
-	private $_recaptcha = null;
-	private $_userIP = null;
+	private $_options;
+	private $_site_key;
+	private $_secret_key;
+	private $_recaptcha;
+	private $_userIP ;
 
 	/**
 	 * Verification_Controls_ReCaptcha constructor.
@@ -112,19 +121,17 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 	 */
 	public function doTest()
 	{
-		if (!empty($_POST["g-recaptcha-response"]))
+		if (empty($_POST['g-recaptcha-response']))
 		{
-			$this->_recaptcha = new ReCaptcha($this->_secret_key);
-			$resp = $this->_recaptcha->verifyResponse($this->_userIP, $_POST['g-recaptcha-response']);
-
-			if (!$resp->success)
-			{
-				return 'wrong_verification_code';
-			}
+			return 'need_qr_verification';
 		}
-		else
+
+		$this->_recaptcha = new ReCaptcha($this->_secret_key);
+		$resp = $this->_recaptcha->verifyResponse($this->_userIP, $_POST['g-recaptcha-response']);
+
+		if (!$resp->success)
 		{
-			return 'wrong_verification_code';
+			return 'need_qr_verification';
 		}
 
 		return true;
@@ -150,7 +157,7 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 		global $txt;
 
 		// Visual verification.
-		$config_vars = array(
+		return  array(
 			array('title', 'recaptcha_verification'),
 			array('desc', 'recaptcha_desc'),
 			array('check', 'recaptcha_enable'),
@@ -158,7 +165,5 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 			array('text', 'recaptcha_secret_key'),
 			array('text', 'recaptcha_language', 6, 'postinput' => $txt['recaptcha_language_desc']),
 		);
-
-		return $config_vars;
 	}
 }
