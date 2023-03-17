@@ -6,7 +6,7 @@
  * @author Antony Derham
  * @copyright 2015-2022
  * @license BSD 3-clause
- * @version 1.0.2
+ * @version 1.0.3
  */
 
 function icv_recaptcha(&$known_verifications)
@@ -14,7 +14,9 @@ function icv_recaptcha(&$known_verifications)
 	// Make sure it is not already there.
 	$key = array_search('ReCaptcha', $known_verifications);
 	if ($key !== false)
+	{
 		unset($known_verifications[$key]);
+	}
 
 	$known_verifications[] = 'ReCaptcha';
 	loadLanguage('reCaptcha');
@@ -28,8 +30,7 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 	private $_options;
 	private $_site_key;
 	private $_secret_key;
-	private $_recaptcha;
-	private $_userIP ;
+	private $_userIP;
 
 	/**
 	 * Verification_Controls_ReCaptcha constructor.
@@ -64,7 +65,7 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 	{
 		global $modSettings;
 
-		$this->show_captcha = false;
+		$show_captcha = false;
 
 		// Language parameter
 		$lang = !empty($modSettings['recaptcha_language']) ? '&hl=' . $modSettings['recaptcha_language'] : '';
@@ -72,7 +73,7 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 		// On and valid, well non empty keys.
 		if (!empty($modSettings['recaptcha_enable']) && !empty($this->_site_key) && !empty($this->_secret_key))
 		{
-			$this->show_captcha = true;
+			$show_captcha = true;
 
 			loadTemplate('reCaptcha');
 			loadTemplate('VerificationControls');
@@ -85,15 +86,13 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 			loadJavascriptFile('https://www.google.com/recaptcha/api.js?onload=onloadreCaptcha&render=explicit' . $lang, array('defer' => true, 'async' => 'true'));
 		}
 
-		return $this->show_captcha;
+		return $show_captcha;
 	}
 
 	/**
 	 * Done by the JS script
 	 *
 	 * @param bool $refresh
-	 *
-	 * @return bool
 	 */
 	public function createTest($refresh = true)
 	{
@@ -126,8 +125,8 @@ class Verification_Controls_ReCaptcha implements Verification_Controls
 			return 'need_qr_verification';
 		}
 
-		$this->_recaptcha = new ReCaptcha($this->_secret_key);
-		$resp = $this->_recaptcha->verifyResponse($this->_userIP, $_POST['g-recaptcha-response']);
+		$_recaptcha = new ReCaptcha($this->_secret_key);
+		$resp = $_recaptcha->verifyResponse($this->_userIP, $_POST['g-recaptcha-response']);
 
 		if (!$resp->success)
 		{
