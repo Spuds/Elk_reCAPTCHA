@@ -65,9 +65,7 @@ class ReCaptcha
 		}
 
 		// Put it all together
-		$req = implode('&', $req);
-
-		return $req;
+		return implode('&', $req);
 	}
 
 	/**
@@ -80,9 +78,7 @@ class ReCaptcha
 		require_once(SUBSDIR . '/Package.subs.php');
 
 		$req = $this->_encodeQS($data);
-		$response = fetch_web_data(self::$_siteVerifyUrl, $req);
-
-		return $response;
+		return fetch_web_data(self::$_siteVerifyUrl, $req);
 	}
 
 	/**
